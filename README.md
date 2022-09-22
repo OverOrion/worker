@@ -42,3 +42,4 @@ For direct calls, a worker runs a web-socket server inside the enclave. An impor
 If the web-socket server hits that limit, incoming connections will be declined until one of the established connections is closed. Permanently changing the `ulimit -n` value can be done in the `/etc/security/limits.conf` configuration file. See [this](https://linuxhint.com/permanently_set_ulimit_value/) guide for more information.
 foobar
 foo
+bar
