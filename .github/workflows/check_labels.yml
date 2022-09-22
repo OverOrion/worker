@@ -1,41 +1,44 @@
 name: Labels Check
 on:
   pull_request:
-    types: [opened, labeled, unlabeled, synchronize]
+    types: [opened, labeled, unlabeled, synchronize, ready_for_review]
 jobs:
   A-label-check:
-    if: github.base_ref == 'master'
+    if: github.base_ref == 'master' &&
+      ${{ !github.event.pull_request.draft }} &&
+      ! contains(github.event.pull_request.labels.*.name, fromJson'["A0-core","A1-cli","A2-applibs","A3-sidechain","A4-offchain","A5-teeracle","A6-evm","A7-somethingelse"]')
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@master
-        id: checkLabel
-        with:
-          hasSome: A0-core,A1-cli,A2-applibs,A3-sidechain,A4-offchain,A5-teeracle,A6-evm,A7-somethingelse
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+    - name: Report missing label A
+      run: |
+        exit 1
+
   B-label-check:
-    if: github.base_ref == 'master'
+    if: github.base_ref == 'master' &&
+      ${{ !github.event.pull_request.draft }} &&
+      ! contains(github.event.pull_request.labels.*.name, fromJson'["B0-silent","B1-releasenotes"]')
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@master
-        id: checkLabel
-        with:
-          hasSome: B0-silent,B1-releasenotes
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Report missing label B
+        run: |
+          exit 1
+
   C-label-check:
-    if: github.base_ref == 'master'
+    if: github.base_ref == 'master' &&
+      ${{ !github.event.pull_request.draft }} &&
+      ! contains(github.event.pull_request.labels.*.name, fromJson'["C1-low 📌","C3-medium 📣","C7-high ❗️","C9-critical ‼️"]')
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@master
-        id: checkLabel
-        with:
-          hasSome: C1-low 📌,C3-medium 📣,C7-high ❗️,C9-critical ‼️
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Report missing label C
+        run: |
+          exit 1
+
   E-label-check:
-    if: github.base_ref == 'master'
+    if: github.base_ref == 'master' &&
+        ${{ !github.event.pull_request.draft }} &&
+        ! contains(github.event.pull_request.labels.*.name, fromJson'["E0-breaksnothing","E3-dependencies","E5-publicapi","E6-parentchain","E8-breakseverything"]')
     runs-on: ubuntu-latest
     steps:
-      - uses: danielchabr/pr-labels-checker@master
-        id: checkLabel
-        with:
-          hasSome: E0-breaksnothing,E3-dependencies,E5-publicapi,E6-parentchain,E8-breakseverything
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Report missing label E
+        run: |
+          exit 1
