@@ -1,12 +1,3 @@
-#[cfg(test)]
-mod tests {
-	#[test]
-	fn it_works() {
-		let result = 2 + 2;
-		assert_eq!(result, 4);
-	}
-}
-
 pub mod types;
 
 /// Opaque types. These are used by the CLI to instantiate machinery that don't need to know
