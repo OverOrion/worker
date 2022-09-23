@@ -6385,6 +6385,10 @@ dependencies = [
 [[package]]
 name = "sgx-runtime-primitives"
 version = "0.1.0"
+dependencies = [
+ "sp-runtime",
+ "sp-version",
+]
 
 [[package]]
 name = "sgx_alloc"
