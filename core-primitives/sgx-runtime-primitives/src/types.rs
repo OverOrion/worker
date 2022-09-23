@@ -1,4 +1,4 @@
-use sp_runtime::generic;
+use sp_runtime::{generic, traits::{Verify, IdentifyAccount}};
 
 /// The address format for describing accounts.
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
