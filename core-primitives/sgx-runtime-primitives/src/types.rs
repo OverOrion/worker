@@ -1,3 +1,5 @@
+use sp_runtime::generic;
+
 /// The address format for describing accounts.
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
