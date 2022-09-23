@@ -34,6 +34,7 @@ members = [
     "core-primitives/ocall-api",
     "core-primitives/primitives-cache",
     "core-primitives/rpc",
+    "core-primitives/sgx-runtime-primitives",
     "core-primitives/settings",
     "core-primitives/sgx/crypto",
     "core-primitives/sgx/io",
