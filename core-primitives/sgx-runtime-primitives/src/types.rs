@@ -1,4 +1,9 @@
-use sp_runtime::{generic::{self, UncheckedExtrinsic}, traits::{Verify, IdentifyAccount, BlakeTwo256}, app_crypto::sp_core, MultiSignature};
+use sp_runtime::{generic::self, traits::{Verify, IdentifyAccount, BlakeTwo256}, app_crypto::sp_core, MultiSignature};
+
+/// Unchecked extrinsic type as expected by this sgx-runtime.
+pub type UncheckedExtrinsic = generic::UncheckedExtrinsic<Address, Call, Signature, SignedExtra>;
+/// Extrinsic type that has already been checked.
+pub type CheckedExtrinsic = generic::CheckedExtrinsic<AccountId, Call, SignedExtra>;
 
 /// The address format for describing accounts.
 pub type Address = sp_runtime::MultiAddress<AccountId, ()>;
@@ -35,7 +40,7 @@ pub type Index = u32;
 pub type Hash = sp_core::H256;
 
 /// Digest item type.
-pub type DigestItem = generic::DigestItem<Hash>;
+pub type DigestItem = generic::DigestItem;
 
 /// A type to hold UTC unix epoch [ms]
 pub type Moment = u64;
