@@ -43,13 +43,11 @@ use frame_support::weights::ConstantMultiplier;
 use pallet_transaction_payment::CurrencyAdapter;
 use sp_api::impl_runtime_apis;
 use sp_core::OpaqueMetadata;
-use sp_runtime::{
-	create_runtime_str, generic,
-	traits::{AccountIdLookup, BlakeTwo256, Block as BlockT, IdentifyAccount, Verify},
-	MultiSignature,
-};
+use sp_runtime::{traits::{AccountIdLookup, BlakeTwo256, Block as BlockT}, generic};
 use sp_std::prelude::*;
 use sp_version::RuntimeVersion;
+
+use sgx_runtime_primitives;
 
 // A few exports that help ease life for downstream crates.
 pub use frame_support::{

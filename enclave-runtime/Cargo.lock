@@ -1479,6 +1479,7 @@ dependencies = [
  "pallet-transaction-payment-rpc-runtime-api",
  "parity-scale-codec",
  "scale-info",
+ "sgx-runtime-primitives",
  "sp-api",
  "sp-block-builder",
  "sp-consensus-aura",
@@ -3544,6 +3545,15 @@ dependencies = [
  "itoa 1.0.3",
  "ryu",
  "serde 1.0.144",
+]
+
+[[package]]
+name = "sgx-runtime-primitives"
+version = "0.1.0"
+dependencies = [
+ "sp-api",
+ "sp-runtime",
+ "sp-version",
 ]
 
 [[package]]

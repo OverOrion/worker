@@ -2605,6 +2605,7 @@ dependencies = [
  "parity-scale-codec",
  "scale-info",
  "serde 1.0.144",
+ "sgx-runtime-primitives",
  "sp-api",
  "sp-block-builder",
  "sp-consensus-aura",
@@ -6386,6 +6387,7 @@ dependencies = [
 name = "sgx-runtime-primitives"
 version = "0.1.0"
 dependencies = [
+ "sp-api",
  "sp-runtime",
  "sp-version",
 ]
