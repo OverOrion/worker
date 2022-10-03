@@ -20,7 +20,7 @@ use crate::sgx_reexport_prelude::*;
 
 use crate::{error::WebSocketResult, tls_common::make_config};
 use rustls::ServerConfig;
-use std::{string::String, sync::Arc};
+use std::sync::Arc;
 
 /// Trait to provide a Rustls server config.
 pub trait ProvideServerConfig: Send + Sync {
@@ -28,18 +28,18 @@ pub trait ProvideServerConfig: Send + Sync {
 }
 
 pub struct FromFileConfigProvider {
-	private_key_path: String,
-	certificates_path: String,
+	private_key: Vec<u8>,
+	certificate: Vec<u8>,
 }
 
 impl FromFileConfigProvider {
-	pub fn new(private_key_path: String, certificates_path: String) -> Self {
-		Self { private_key_path, certificates_path }
+	pub fn new(private_key: Vec<u8>, certificate: Vec<u8>) -> Self {
+		Self { private_key, certificate }
 	}
 }
 
 impl ProvideServerConfig for FromFileConfigProvider {
 	fn get_config(&self) -> WebSocketResult<Arc<ServerConfig>> {
-		make_config(self.certificates_path.as_str(), self.private_key_path.as_str())
+		make_config(&self.certificate, &self.private_key)
 	}
 }

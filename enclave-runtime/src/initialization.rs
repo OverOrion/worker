@@ -370,18 +370,14 @@ pub(crate) fn init_direct_invocation_server(server_addr: String) -> EnclaveResul
 	let cert =
 		ed25519_self_signed_certificate(signing, "Enclave").map_err(|e| Error::Other(e.into()))?;
 
-	//write certificate and private key pem file
+	//Serialize certificate and private key pem
 	let pem_serialized = cert.serialize_pem().map_err(|e| Error::Other(e.into()))?;
 	let private_key = cert.serialize_private_key_pem();
-	fs::write(ENCLAVE_CERTIFICATE_FILE_PATH, &pem_serialized.as_bytes())
-		.map_err(|e| Error::Other(e.into()))?;
-	fs::write(ENCLAVE_CERTIFICATE_PRIVATE_KEY_PATH, &private_key.as_bytes())
-		.map_err(|e| Error::Other(e.into()))?;
 
 	let web_socket_server = create_ws_server(
 		server_addr.as_str(),
-		ENCLAVE_CERTIFICATE_PRIVATE_KEY_PATH,
-		ENCLAVE_CERTIFICATE_FILE_PATH,
+		&private_key.as_bytes(),
+		&pem_serialized.as_bytes(),
 		rpc_handler,
 	);
 
