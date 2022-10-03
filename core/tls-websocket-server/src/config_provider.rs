@@ -20,7 +20,7 @@ use crate::sgx_reexport_prelude::*;
 
 use crate::{error::WebSocketResult, tls_common::make_config};
 use rustls::ServerConfig;
-use std::sync::Arc;
+use std::{sync::Arc, vec::Vec};
 
 /// Trait to provide a Rustls server config.
 pub trait ProvideServerConfig: Send + Sync {

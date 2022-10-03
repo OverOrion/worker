@@ -18,9 +18,6 @@
 #[cfg(all(not(feature = "std"), feature = "sgx"))]
 use crate::sgx_reexport_prelude::*;
 
-#[cfg(all(not(feature = "std"), feature = "sgx"))]
-use std::untrusted::fs;
-
 use crate::{error::WebSocketError, WebSocketResult};
 use rustls::NoClientAuth;
 use std::{io::BufReader, string::ToString, sync::Arc, vec, vec::Vec};

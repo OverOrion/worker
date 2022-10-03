@@ -70,10 +70,7 @@ use itp_node_api::metadata::provider::NodeMetadataRepository;
 use itp_nonce_cache::GLOBAL_NONCE_CACHE;
 use itp_primitives_cache::GLOBAL_PRIMITIVES_CACHE;
 use itp_settings::{
-	files::{
-		ENCLAVE_CERTIFICATE_FILE_PATH, ENCLAVE_CERTIFICATE_PRIVATE_KEY_PATH,
-		STATE_SNAPSHOTS_CACHE_SIZE,
-	},
+	files::STATE_SNAPSHOTS_CACHE_SIZE,
 	worker_mode::{ProvideWorkerMode, WorkerMode},
 };
 use itp_sgx_crypto::{
@@ -92,7 +89,7 @@ use its_sidechain::block_composer::BlockComposer;
 use log::*;
 use primitive_types::H256;
 use sp_core::crypto::Pair;
-use std::{collections::HashMap, fs, string::String, sync::Arc};
+use std::{collections::HashMap, string::String, sync::Arc};
 
 pub(crate) fn init_enclave(mu_ra_url: String, untrusted_worker_url: String) -> EnclaveResult<()> {
 	// Initialize the logging environment in the enclave.
