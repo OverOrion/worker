@@ -2591,6 +2591,7 @@ dependencies = [
  "frame-system-benchmarking",
  "frame-system-rpc-runtime-api",
  "hex-literal",
+ "itp-sgx-primitives",
  "pallet-aura",
  "pallet-balances",
  "pallet-evm",
@@ -3192,6 +3193,10 @@ dependencies = [
 [[package]]
 name = "itp-sgx-primitives"
 version = "0.9.0"
+dependencies = [
+ "sp-core",
+ "sp-runtime",
+]
 
 [[package]]
 name = "itp-stf-executor"
