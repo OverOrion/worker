@@ -3190,6 +3190,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "itp-sgx-primitives"
+version = "0.9.0"
+
+[[package]]
 name = "itp-stf-executor"
 version = "0.9.0"
 dependencies = [
@@ -6394,10 +6398,6 @@ dependencies = [
  "ryu",
  "serde 1.0.144",
 ]
-
-[[package]]
-name = "sgx-runtime-primitives"
-version = "0.1.0"
 
 [[package]]
 name = "sgx_alloc"
