@@ -179,7 +179,7 @@ $(Worker_Name): $(Worker_Enclave_u_Object) $(SRC_Files)
 $(Client_Name): $(SRC_Files)
 	@echo
 	@echo "Building the integritee-cli"
-	@cargo build -p integritee-cli $(Client_Rust_Flags)
+	@cargo build --timings -p integritee-cli $(Client_Rust_Flags)
 	@echo "Cargo  =>  $@"
 	cp $(Client_Rust_Path)/$(Client_Binary) ./bin
 

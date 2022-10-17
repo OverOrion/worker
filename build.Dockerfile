@@ -41,7 +41,8 @@ COPY . .
 
 RUN make
 
-RUN cargo test --release
+RUN cargo test --release --timings
+COPY . .
 
 
 ### Cached Builder Stage (WIP)
