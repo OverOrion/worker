@@ -1,5 +1,5 @@
 [package]
-name = "stf-primitives"
+name = "itp-stf-primitives"
 version = "0.1.0"
 edition = "2021"
 
