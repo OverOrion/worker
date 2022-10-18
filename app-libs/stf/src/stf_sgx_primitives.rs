@@ -19,14 +19,7 @@ use codec::{Decode, Encode};
 use itp_types::H256;
 use std::marker::PhantomData;
 
-pub mod types {
-	pub use itp_types::{AccountData, AccountInfo, BlockNumber, Header as ParentchainHeader};
-
-	pub type State = itp_sgx_externalities::SgxExternalities;
-	pub type StateType = itp_sgx_externalities::SgxExternalitiesType;
-	pub type StateDiffType = itp_sgx_externalities::SgxExternalitiesDiffType;
-	pub use super::StatePayload;
-}
+pub mod types;
 
 pub struct Stf<Call, Getter, State, Runtime> {
 	phantom_data: PhantomData<(Call, Getter, State, Runtime)>,
