@@ -72,7 +72,7 @@ jobs:
 
       - run: docker images --all
       - run: mkdir ${{  github.workspace }}/docker_target
-      - run: docker cp ${{ env.BUILD_CONTAINER_NAME}}:/root/work/worker/target ${{  github.workspace }}/docker_target
+      - run: docker cp integritee-worker-${{ matrix.flavor_id }}-${{ github.sha }}:/root/work/worker/target ${{  github.workspace }}/docker_target
       - run: ls -R
 
       - name: Upload cargo timings report
