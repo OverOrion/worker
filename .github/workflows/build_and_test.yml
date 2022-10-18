@@ -71,13 +71,15 @@ jobs:
           -f build.Dockerfile .
 
       - run: docker images --all
+      - run: mkdir ${{  github.workspace }}/docker_target
+      - run: docker cp builder:/root/work/worker/target ${{  github.workspace }}/docker_target
       - run: ls -R
 
       - name: Upload cargo timings report
         uses: actions/upload-artifact@v3
         with:
           name: cargo-timings-report
-          path: /root/work/worker/target/cargo-timings/*.html
+          path: ${{  github.workspace }}/docker_target/cargo-timings/*.html
 
       - name: Test Enclave # cargo test is not supported in the enclave, see: https://github.com/apache/incubator-teaclave-sgx-sdk/issues/232
         run: docker run --name ${{ env.BUILD_CONTAINER_NAME }} integritee-worker-${{ matrix.flavor_id }}-${{ github.sha }} test --all
