@@ -41,7 +41,9 @@ COPY . .
 
 RUN make
 
-RUN cargo test --release
+RUN mkdir -p ${CARGO_HOME:-~/.cargo}/bin
+RUN curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+RUN cargo nextest run --release
 
 
 ### Cached Builder Stage (WIP)
