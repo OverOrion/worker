@@ -9,9 +9,9 @@ SDK_PATH = rust-sgx-sdk
 VERSION_FILE = rust-sgx-sdk/version
 LOCAL_VERSION = $(shell cat $(VERSION_FILE))
 COMMAND = git ls-remote $(REPO) HEAD | awk '{ print $$1 }'
-# REMOTE_VERSION = $(shell $(COMMAND))
+REMOTE_VERSION = $(shell $(COMMAND))
 # or specify the exact hash if you need a non-default branch / tag / commit etc.
-REMOTE_VERSION = 07b7c632068e2849f1486bee2f08facaf08e9c1a
+#REMOTE_VERSION = 07b7c632068e2849f1486bee2f08facaf08e9c1a
 
 # update the SDK files
 all: updatesdk
