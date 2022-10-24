@@ -2008,7 +2008,7 @@ dependencies = [
 [[package]]
 name = "hashbrown_tstd"
 version = "0.12.0"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 
 [[package]]
 name = "hdrhistogram"
@@ -6480,13 +6480,13 @@ dependencies = [
 
 [[package]]
 name = "sgx_alloc"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 
 [[package]]
 name = "sgx_backtrace_sys"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "cc",
  "sgx_build_helper",
@@ -6495,13 +6495,13 @@ dependencies = [
 
 [[package]]
 name = "sgx_build_helper"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 
 [[package]]
 name = "sgx_crypto_helper"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "itertools",
  "libc",
@@ -6519,21 +6519,21 @@ dependencies = [
 
 [[package]]
 name = "sgx_demangle"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 
 [[package]]
 name = "sgx_libc"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_types",
 ]
 
 [[package]]
 name = "sgx_rand"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_trts",
  "sgx_tstd",
@@ -6542,16 +6542,16 @@ dependencies = [
 
 [[package]]
 name = "sgx_tcrypto"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_types",
 ]
 
 [[package]]
 name = "sgx_tprotected_fs"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_trts",
  "sgx_types",
@@ -6559,8 +6559,8 @@ dependencies = [
 
 [[package]]
 name = "sgx_trts"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_libc",
  "sgx_types",
@@ -6576,8 +6576,8 @@ dependencies = [
 
 [[package]]
 name = "sgx_tstd"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "hashbrown_tstd",
  "sgx_alloc",
@@ -6592,13 +6592,13 @@ dependencies = [
 
 [[package]]
 name = "sgx_types"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 
 [[package]]
 name = "sgx_ucrypto"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "libc",
  "rand_core 0.3.1",
@@ -6608,16 +6608,16 @@ dependencies = [
 
 [[package]]
 name = "sgx_unwind"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "sgx_build_helper",
 ]
 
 [[package]]
 name = "sgx_urts"
-version = "1.1.5"
-source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#d2d339cbb005f676bb700059bd51dc689c025f6b"
+version = "1.1.6"
+source = "git+https://github.com/apache/incubator-teaclave-sgx-sdk?tag=v1.1.5#07b7c632068e2849f1486bee2f08facaf08e9c1a"
 dependencies = [
  "libc",
  "sgx_types",
