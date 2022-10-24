@@ -80,7 +80,7 @@ where
 
 	/// Send the shard of the state we want to receive to the provisioning server.
 	fn write_shard(&mut self) -> EnclaveResult<()> {
-		self.tls_stream.write(self.shard.as_bytes())?;
+		self.tls_stream.write_all(self.shard.as_bytes())?;
 		Ok(())
 	}
 
@@ -134,7 +134,7 @@ where
 		let opcode: Opcode = start_bytes[0].into();
 		// The 8 bytes following afterwards indicate the payload length.
 		let mut length_buffer = [0u8; 8];
-		self.tls_stream.read(&mut length_buffer)?;
+		self.tls_stream.read_exact(&mut length_buffer)?;
 		let payload_length = u64::from_be_bytes(length_buffer);
 		debug!("Payload length of {:?}: {}", opcode, payload_length);
 
@@ -144,7 +144,7 @@ where
 	/// Read all bytes into a buffer of given length.
 	fn read_until(&mut self, length: usize) -> EnclaveResult<Vec<u8>> {
 		let mut bytes = vec![0u8; length];
-		self.tls_stream.read(&mut bytes)?;
+		self.tls_stream.read_exact(&mut bytes)?;
 		Ok(bytes)
 	}
 }
