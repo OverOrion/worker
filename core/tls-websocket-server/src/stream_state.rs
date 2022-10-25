@@ -33,6 +33,7 @@ pub(crate) type RustlsMidHandshake = MidHandshake<RustlsServerHandshake>;
 pub(crate) type RustlsWebSocket = WebSocket<RustlsStream>;
 
 /// Internal TLS stream state. From pure TLS stream, to web-socket handshake and established WS.
+#[allow(clippy::large_enum_variant)]
 pub(crate) enum StreamState {
 	Invalid,
 	TlsStream(RustlsStream),
