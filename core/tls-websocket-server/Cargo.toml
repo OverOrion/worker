@@ -16,7 +16,7 @@ sgx_types = { optional = true, git = "https://github.com/apache/teaclave-sgx-sdk
 sgx_crypto_helper = { default-features = false, optional = true, features = ["mesalock_sgx"], version = "1.1.5", git = "https://github.com/apache/incubator-teaclave-sgx-sdk", tag = "v1.1.5" }
 
 # sgx enabled external libraries
-mio-extras = { optional = true, default-features = false, git = "https://github.com/integritee-network/mio-extras-sgx", rev = "963234b" }
+mio-extras = { optional = true, default-features = false, git = "https://github.com/OverOrion/mio-extras-sgx", branch = "teaclave-v1.1.6-testing" }
 mio_sgx = { package = "mio", optional = true, git = "https://github.com/OverOrion/mio-sgx", branch = "teaclave-v1.1.6-testing" }
 rustls_sgx = { package = "rustls", optional = true, git = "https://github.com/mesalock-linux/rustls", branch = "mesalock_sgx" }
 thiserror_sgx = { package = "thiserror", optional = true, git = "https://github.com/mesalock-linux/thiserror-sgx", tag = "sgx_1.1.3" }

@@ -2901,9 +2901,9 @@ dependencies = [
  "chrono 0.4.22",
  "env_logger",
  "log 0.4.17",
- "mio 0.6.21 (git+https://github.com/OverOrion/mio-sgx?branch=teaclave-v1.1.6-testing)",
+ "mio 0.6.21",
  "mio 0.6.23",
- "mio-extras 2.0.6 (git+https://github.com/integritee-network/mio-extras-sgx?rev=963234b)",
+ "mio-extras 2.0.6 (git+https://github.com/OverOrion/mio-extras-sgx?branch=teaclave-v1.1.6-testing)",
  "rcgen",
  "rustls 0.19.0 (git+https://github.com/mesalock-linux/rustls?branch=mesalock_sgx)",
  "rustls 0.19.1",
@@ -4249,20 +4249,6 @@ dependencies = [
 [[package]]
 name = "mio"
 version = "0.6.21"
-source = "git+https://github.com/mesalock-linux/mio-sgx?tag=sgx_1.1.3#5b0e56a3066231c7a8d1876c7be3a19b08ffdfd5"
-dependencies = [
- "iovec 0.1.4 (git+https://github.com/mesalock-linux/iovec-sgx)",
- "log 0.4.14 (git+https://github.com/mesalock-linux/log-sgx)",
- "net2 0.2.33",
- "sgx_libc",
- "sgx_trts",
- "sgx_tstd",
- "slab 0.4.2",
-]
-
-[[package]]
-name = "mio"
-version = "0.6.21"
 source = "git+https://github.com/OverOrion/mio-sgx?branch=teaclave-v1.1.6-testing#2f5988085adb07969137b5403e51fb3981de26f3"
 dependencies = [
  "iovec 0.1.4 (git+https://github.com/mesalock-linux/iovec-sgx)",
@@ -4320,11 +4306,11 @@ dependencies = [
 [[package]]
 name = "mio-extras"
 version = "2.0.6"
-source = "git+https://github.com/integritee-network/mio-extras-sgx?rev=963234b#963234bf55e44f9efff921938255126c48deef3a"
+source = "git+https://github.com/OverOrion/mio-extras-sgx?branch=teaclave-v1.1.6-testing#5437bce92667423fa1e4a8c35303a6c4d8e2eea5"
 dependencies = [
  "lazycell",
  "log 0.4.17",
- "mio 0.6.21 (git+https://github.com/mesalock-linux/mio-sgx?tag=sgx_1.1.3)",
+ "mio 0.6.21",
  "mio 0.6.23",
  "sgx_tstd",
  "sgx_types",
