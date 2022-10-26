@@ -4249,7 +4249,7 @@ dependencies = [
 [[package]]
 name = "mio"
 version = "0.6.21"
-source = "git+https://github.com/OverOrion/mio-sgx?branch=teaclave-v1.1.6-testing#2f5988085adb07969137b5403e51fb3981de26f3"
+source = "git+https://github.com/OverOrion/mio-sgx?branch=teaclave-v1.1.6-testing#8e5161416e88d87cc655cc5deb91dab83accbfc0"
 dependencies = [
  "iovec 0.1.4 (git+https://github.com/mesalock-linux/iovec-sgx)",
  "log 0.4.14 (git+https://github.com/mesalock-linux/log-sgx)",
