@@ -96,7 +96,8 @@ pub fn test_tls_ra_server_client_networking() {
 	thread::sleep(Duration::from_secs(1));
 
 	// Start client.
-	let socket = TcpStream::connect(server_addr(port)).unwrap();
+	let stream = TcpStream::connect(SERVER_ADDR).unwrap();
+	let socket = TcpStream::from_stream(stream).unwrap();
 	let result = request_state_provisioning_internal(
 		socket.as_raw_fd(),
 		SIGN_TYPE,
