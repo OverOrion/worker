@@ -34,7 +34,7 @@ use itp_ocall_api::EnclaveAttestationOCallApi;
 use itp_settings::worker_mode::{ProvideWorkerMode, WorkerMode, WorkerModeProvider};
 use itp_types::ShardIdentifier;
 use log::*;
-use rustls::{ServerConfig, ServerSession, StreamOwned};
+use rustls::{ServerConfig, ServerSession, Stream};
 use sgx_types::*;
 use std::{
 	backtrace::{self, PrintFormat},
@@ -62,18 +62,18 @@ impl From<WorkerMode> for ProvisioningPayload {
 /// Server part of the TCP-level connection and the underlying TLS-level session.
 ///
 /// Includes a seal handler, which handles the reading part of the data to be sent.
-struct TlsServer<StateAndKeyUnsealer> {
-	tls_stream: StreamOwned<ServerSession, TcpStream>,
+struct TlsServer<'a, StateAndKeyUnsealer> {
+	tls_stream: Stream<'a, ServerSession, TcpStream>,
 	seal_handler: StateAndKeyUnsealer,
 	provisioning_payload: ProvisioningPayload,
 }
 
-impl<StateAndKeyUnsealer> TlsServer<StateAndKeyUnsealer>
+impl<'a, StateAndKeyUnsealer> TlsServer<'a, StateAndKeyUnsealer>
 where
 	StateAndKeyUnsealer: UnsealStateAndKeys,
 {
 	fn new(
-		tls_stream: StreamOwned<ServerSession, TcpStream>,
+		tls_stream: Stream<'a, ServerSession, TcpStream>,
 		seal_handler: StateAndKeyUnsealer,
 		provisioning_payload: ProvisioningPayload,
 	) -> Self {
@@ -108,7 +108,6 @@ where
 			},
 		}
 
-		debug!("Successfully provisioned all payloads to peer");
 		Ok(())
 	}
 
@@ -210,11 +209,14 @@ pub(crate) fn run_state_provisioning_server_internal<
 	seal_handler: StateAndKeyUnsealer,
 ) -> EnclaveResult<()> {
 	let server_config = tls_server_config(sign_type, OcallApi, skip_ra == 1)?;
-	let (server_session, tcp_stream) = tls_server_session_stream(socket_fd, server_config)?;
+	let (mut server_session, mut tcp_stream) = tls_server_session_stream(socket_fd, server_config)?;
 	let provisioning = ProvisioningPayload::from(WorkerModeProvider::worker_mode());
 
-	let mut server =
-		TlsServer::new(StreamOwned::new(server_session, tcp_stream), seal_handler, provisioning);
+	let mut server = TlsServer::new(
+		rustls::Stream::new(&mut server_session, &mut tcp_stream),
+		seal_handler,
+		provisioning,
+	);
 
 	println!("    [Enclave] (MU-RA-Server) MU-RA successful sending keys");
 	server.write_shard()
@@ -224,7 +226,7 @@ fn tls_server_session_stream(
 	socket_fd: i32,
 	server_config: ServerConfig,
 ) -> EnclaveResult<(ServerSession, TcpStream)> {
-	let sess = ServerSession::new(&Arc::new(server_config));
+	let sess = rustls::ServerSession::new(&Arc::new(server_config));
 	let conn = TcpStream::new(socket_fd).map_err(|e| EnclaveError::Other(e.into()))?;
 	Ok((sess, conn))
 }
