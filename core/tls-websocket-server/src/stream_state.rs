@@ -21,6 +21,7 @@ use crate::sgx_reexport_prelude::*;
 use log::*;
 use mio::net::TcpStream;
 use rustls::ServerSession;
+use std::boxed::Box;
 use tungstenite::{
 	accept,
 	handshake::{server::NoCallback, MidHandshake},
