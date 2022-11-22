@@ -729,7 +729,14 @@ fn we_are_primary_validateer(
 	node_api: &ParentchainApi,
 	register_enclave_xt_header: &Header,
 ) -> Result<bool, Error> {
+	let num_of_workers = node_api.enclave_count(None)?;
+	// If there is only one worker, it is primary
+	if num_of_workers == 1 {
+		return Ok(true)
+	}
+
 	let enclave_count_of_previous_block =
 		node_api.enclave_count(Some(*register_enclave_xt_header.parent_hash()))?;
+
 	Ok(enclave_count_of_previous_block == 0)
 }
