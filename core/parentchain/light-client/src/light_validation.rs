@@ -108,8 +108,8 @@ impl<Block: ParentchainBlockTrait, OcallApi: EnclaveOnChainOCallApi>
 			.iter()
 			.find(|header| header.hash() == *parent_hash && *header.parent_hash() == ancestor_hash)
 		{
-			Some(_) => return Ok(()),
-			None => return Err(Error::InvalidAncestryProof),
+			Some(_) => Ok(()),
+			None => Err(Error::InvalidAncestryProof),
 		}
 	}
 
