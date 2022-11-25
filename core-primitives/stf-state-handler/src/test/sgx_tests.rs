@@ -31,10 +31,10 @@ use crate::{
 	test::mocks::initialize_state_mock::InitializeStateMock,
 };
 use codec::{Decode, Encode};
-use ita_stf::{State as StfState, StateType as StfStateType};
 use itp_sgx_crypto::{mocks::KeyRepositoryMock, Aes, AesSeal, StateCrypto};
 use itp_sgx_externalities::{SgxExternalities, SgxExternalitiesTrait};
 use itp_sgx_io::{write, StaticSealedIO};
+use itp_stf_primitives::stf_sgx_primitives::types::{State as StfState, StateType as StfStateType};
 use itp_stf_state_observer::state_observer::StateObserver;
 use itp_types::{ShardIdentifier, H256};
 use sp_core::hashing::blake2_256;

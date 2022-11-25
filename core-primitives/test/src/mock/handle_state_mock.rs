@@ -22,7 +22,7 @@ use std::sync::{SgxRwLock as RwLock, SgxRwLockWriteGuard as RwLockWriteGuard};
 use std::sync::{RwLock, RwLockWriteGuard};
 
 use codec::Encode;
-use ita_stf::State as StfState;
+use itp_stf_primitives::stf_sgx_primitives::types::State as StfState;
 use itp_stf_state_handler::{
 	error::{Error, Result},
 	handle_state::HandleState,
@@ -108,9 +108,9 @@ pub mod tests {
 
 	use super::*;
 	use codec::{Decode, Encode};
-	use ita_stf::stf_sgx_tests::StfState;
 	use itp_sgx_externalities::{SgxExternalitiesTrait, SgxExternalitiesType};
 	use itp_stf_interface::InitState;
+	//use itp_stf_primitives::stf_sgx_tests::StfState;
 	use itp_types::ShardIdentifier;
 	use sp_core::{blake2_256, crypto::AccountId32};
 
