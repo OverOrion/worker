@@ -34,12 +34,6 @@ use sp_runtime::{
 	EncodedJustification, Justifications,
 };
 
-#[derive(Default)]
-pub struct GrandpaFinality;
-
-#[derive(Default)]
-pub struct ParachainFinality;
-
 pub trait Finality<Block: ParentchainBlockTrait> {
 	fn validate(
 		&self,
@@ -49,6 +43,16 @@ pub trait Finality<Block: ParentchainBlockTrait> {
 		justifications: Option<Justifications>,
 		relay: &mut RelayState<Block>,
 	) -> Result<()>;
+}
+
+pub enum FinalityVariants {
+	GrandpaFinality,
+	ParachainFinality,
+}
+
+impl FinalityVariants {
+	pub fn validate() -> () {}
+	fn validate_grandpa_finality() -> () {}
 }
 
 impl<Block> Finality<Block> for ParachainFinality
