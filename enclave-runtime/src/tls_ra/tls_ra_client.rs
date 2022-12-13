@@ -159,6 +159,10 @@ pub unsafe extern "C" fn request_state_provisioning(
 	shard_size: u32,
 	skip_ra: c_int,
 ) -> sgx_status_t {
+	if shard.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let _ = backtrace::enable_backtrace("enclave.signed.so", PrintFormat::Short);
 	let shard = ShardIdentifier::from_slice(slice::from_raw_parts(shard, shard_size as usize));
 

@@ -37,6 +37,10 @@ fn store_sidechain_blocks(
 	signed_blocks_size: u32,
 	sidechain_api: Arc<dyn SidechainBridge>,
 ) -> sgx_status_t {
+	if signed_blocks_ptr.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let signed_blocks_vec: Vec<u8> =
 		unsafe { Vec::from(slice::from_raw_parts(signed_blocks_ptr, signed_blocks_size as usize)) };
 

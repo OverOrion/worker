@@ -37,6 +37,10 @@ fn update_metric(
 	metric_size: u32,
 	oc_api: Arc<dyn MetricsBridge>,
 ) -> sgx_status_t {
+	if metric_ptr.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let metric_encoded: Vec<u8> =
 		unsafe { Vec::from(slice::from_raw_parts(metric_ptr, metric_size as usize)) };
 

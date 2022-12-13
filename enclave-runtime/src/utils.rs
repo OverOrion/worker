@@ -53,6 +53,10 @@ unsafe impl<D: Decode> DecodeRaw for D {
 		T: 'a,
 		&'a [T]: Input,
 	{
+		if data.is_null() {
+			Err("data should NOT be null".into())
+		}
+
 		let mut s = slice::from_raw_parts(data, len);
 
 		Decode::decode(&mut s)
@@ -63,6 +67,10 @@ pub unsafe fn utf8_str_from_raw<'a>(
 	data: *const u8,
 	len: usize,
 ) -> StdResult<&'a str, std::str::Utf8Error> {
+	if data.is_null() {
+		Err(std::str::Utf8Error)
+	}
+
 	let bytes = slice::from_raw_parts(data, len);
 
 	std::str::from_utf8(bytes)

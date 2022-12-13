@@ -65,6 +65,10 @@ fn get_quote(
 ) -> sgx_status_t {
 	debug!("    Entering ocall_get_quote");
 
+	if p_sigrl.is_null() || p_quote.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let revocation_list: Vec<u8> =
 		unsafe { slice::from_raw_parts(p_sigrl, sigrl_len as usize).to_vec() };
 

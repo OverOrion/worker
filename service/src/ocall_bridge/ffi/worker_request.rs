@@ -42,6 +42,10 @@ fn worker_request(
 	resp_size: u32,
 	oc_api: Arc<dyn WorkerOnChainBridge>,
 ) -> sgx_status_t {
+	if request.is_null() || response.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let request_vec: Vec<u8> =
 		unsafe { Vec::from(slice::from_raw_parts(request, req_size as usize)) };
 

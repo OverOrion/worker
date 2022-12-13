@@ -52,6 +52,11 @@ pub unsafe extern "C" fn update_market_data_xt(
 	unchecked_extrinsic: *mut u8,
 	unchecked_extrinsic_size: u32,
 ) -> sgx_status_t {
+	if crypto_currency_ptr.is_null() || fiat_currency_ptr.is_null() || unchecked_extrinsic.is_null()
+	{
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let mut crypto_currency_slice =
 		slice::from_raw_parts(crypto_currency_ptr, crypto_currency_size as usize);
 	let crypto_currency: String = Decode::decode(&mut crypto_currency_slice).unwrap();

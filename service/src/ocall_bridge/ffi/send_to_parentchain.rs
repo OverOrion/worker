@@ -37,6 +37,10 @@ fn send_to_parentchain(
 	extrinsics_encoded_size: u32,
 	oc_api: Arc<dyn WorkerOnChainBridge>,
 ) -> sgx_status_t {
+	if extrinsics_encoded.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let extrinsics_encoded_vec: Vec<u8> = unsafe {
 		Vec::from(slice::from_raw_parts(extrinsics_encoded, extrinsics_encoded_size as usize))
 	};

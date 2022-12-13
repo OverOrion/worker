@@ -89,6 +89,10 @@ pub unsafe extern "C" fn init(
 	untrusted_worker_addr: *const u8,
 	untrusted_worker_addr_size: u32,
 ) -> sgx_status_t {
+	if mu_ra_addr.is_null() || untrusted_worker_addr.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let mu_ra_url =
 		match String::decode(&mut slice::from_raw_parts(mu_ra_addr, mu_ra_addr_size as usize))
 			.map_err(Error::Codec)
@@ -118,6 +122,10 @@ pub unsafe extern "C" fn get_rsa_encryption_pubkey(
 	pubkey: *mut u8,
 	pubkey_size: u32,
 ) -> sgx_status_t {
+	if pubkey.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let rsa_pubkey = match Rsa3072Seal::unseal_pubkey() {
 		Ok(key) => key,
 		Err(e) => return e.into(),
@@ -144,6 +152,10 @@ pub unsafe extern "C" fn get_rsa_encryption_pubkey(
 
 #[no_mangle]
 pub unsafe extern "C" fn get_ecc_signing_pubkey(pubkey: *mut u8, pubkey_size: u32) -> sgx_status_t {
+	if pubkey.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	if let Err(e) = ed25519::create_sealed_if_absent().map_err(Error::Crypto) {
 		return e.into()
 	}
@@ -182,6 +194,10 @@ pub unsafe extern "C" fn set_node_metadata(
 	node_metadata: *const u8,
 	node_metadata_size: u32,
 ) -> sgx_status_t {
+	if node_metadata.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let mut node_metadata_slice = slice::from_raw_parts(node_metadata, node_metadata_size as usize);
 	let metadata = match NodeMetadata::decode(&mut node_metadata_slice).map_err(Error::Codec) {
 		Err(e) => {
@@ -214,6 +230,10 @@ pub unsafe extern "C" fn call_rpc_methods(
 	response: *mut u8,
 	response_len: u32,
 ) -> sgx_status_t {
+	if response.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let request = match utf8_str_from_raw(request, request_len as usize) {
 		Ok(req) => req,
 		Err(e) => {
@@ -276,6 +296,10 @@ pub unsafe extern "C" fn init_direct_invocation_server(
 	server_addr: *const u8,
 	server_addr_size: usize,
 ) -> sgx_status_t {
+	if server_addr.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let mut server_addr_encoded = slice::from_raw_parts(server_addr, server_addr_size);
 
 	let server_addr = match String::decode(&mut server_addr_encoded) {
@@ -303,6 +327,10 @@ pub unsafe extern "C" fn init_parentchain_components(
 ) -> sgx_status_t {
 	info!("Initializing light client!");
 
+	if params.is_null() || latest_header.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let encoded_params = slice::from_raw_parts(params, params_size);
 	let latest_header_slice = slice::from_raw_parts_mut(latest_header, latest_header_size);
 
@@ -323,6 +351,10 @@ pub unsafe extern "C" fn init_parentchain_components(
 
 #[no_mangle]
 pub unsafe extern "C" fn init_shard(shard: *const u8, shard_size: u32) -> sgx_status_t {
+	if shard.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let shard_identifier =
 		ShardIdentifier::from_slice(slice::from_raw_parts(shard, shard_size as usize));
 

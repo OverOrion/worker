@@ -61,6 +61,14 @@ fn fetch_sidechain_blocks_from_peer(
 	sidechain_blocks_size: u32,
 	sidechain_api: Arc<dyn SidechainBridge>,
 ) -> sgx_status_t {
+	if last_imported_block_hash_ptr.is_null()
+		|| maybe_until_block_hash_ptr.is_null()
+		|| shard_identifier_ptr.is_null()
+		|| sidechain_blocks_ptr.is_null()
+	{
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let last_imported_block_hash_encoded = unsafe {
 		Vec::from(slice::from_raw_parts(
 			last_imported_block_hash_ptr,

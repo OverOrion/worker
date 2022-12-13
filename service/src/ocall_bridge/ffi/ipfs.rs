@@ -45,6 +45,10 @@ fn write_ipfs(
 	cid_size: u32,
 	ipfs_api: Arc<dyn IpfsBridge>,
 ) -> sgx_status_t {
+	if enc_state.is_null() || cid.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let state = unsafe { slice::from_raw_parts(enc_state, enc_state_size as usize) };
 	let cid = unsafe { slice::from_raw_parts_mut(cid, cid_size as usize) };
 
@@ -61,6 +65,10 @@ fn write_ipfs(
 }
 
 fn read_ipfs(cid: *const u8, cid_size: u32, ipfs_api: Arc<dyn IpfsBridge>) -> sgx_status_t {
+	if cid.is_null() {
+		return sgx_status_t::SGX_ERROR_INVALID_PARAMETER
+	}
+
 	let _cid = unsafe { slice::from_raw_parts(cid, cid_size as usize) };
 
 	let mut cid: Cid = [0; 46];
