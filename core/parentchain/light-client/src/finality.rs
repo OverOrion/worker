@@ -51,23 +51,22 @@ pub enum FinalityVariants {
 }
 
 impl FinalityVariants {
-	pub fn validate() -> () {}
 	fn validate_grandpa_finality() -> () {}
 }
 
-impl<Block> Finality<Block> for ParachainFinality
-where
-	Block: ParentchainBlockTrait,
-{
+impl<Block> Finality<Block> for FinalityVariants {
 	fn validate(
 		&self,
-		_header: Block::Header,
-		_validator_set: &AuthorityList,
-		_validator_set_id: SetId,
-		_justifications: Option<Justifications>,
-		_relay: &mut RelayState<Block>,
+		header: <Block as ParentchainBlockTrait>::Header,
+		validator_set: &AuthorityList,
+		validator_set_id: SetId,
+		justifications: Option<Justifications>,
+		relay: &mut RelayState<Block>,
 	) -> Result<()> {
-		Ok(())
+		match self {
+			FinalityVariants::GrandpaFinality => todo!(),
+			FinalityVariants::ParachainFinality => Ok(()),
+		}
 	}
 }
 
