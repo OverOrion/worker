@@ -51,31 +51,64 @@ pub enum FinalityVariants {
 }
 
 impl FinalityVariants {
-	fn validate_grandpa_finality() -> () {}
-}
-
-impl<Block> Finality<Block> for FinalityVariants {
-	fn validate(
-		&self,
-		header: <Block as ParentchainBlockTrait>::Header,
-		validator_set: &AuthorityList,
-		validator_set_id: SetId,
-		justifications: Option<Justifications>,
+	fn apply_validator_set_change<Block: ParentchainBlockTrait>(
 		relay: &mut RelayState<Block>,
-	) -> Result<()> {
-		match self {
-			FinalityVariants::GrandpaFinality => todo!(),
-			FinalityVariants::ParachainFinality => Ok(()),
+		header: &Block::Header,
+	) {
+		if let Some(change) = relay.scheduled_change.take() {
+			if &change.at_block == header.number() {
+				relay.current_validator_set = change.next_authority_list;
+				relay.current_validator_set_id += 1;
+			}
 		}
 	}
-}
 
-impl<Block> Finality<Block> for GrandpaFinality
-where
-	Block: ParentchainBlockTrait,
-	NumberFor<Block>: finality_grandpa::BlockNumberOps,
-{
-	fn validate(
+	fn schedule_validator_set_change<Block: ParentchainBlockTrait>(
+		relay: &mut RelayState<Block>,
+		header: &Block::Header,
+	) {
+		if let Some(log) = Self::pending_change::<Block>(header.digest()) {
+			if relay.scheduled_change.is_some() {
+				error!(
+					"Tried to scheduled authorities change even though one is already scheduled!!"
+				); // should not happen if blockchain is configured properly
+			} else {
+				relay.scheduled_change = Some(ScheduledChangeAtBlock {
+					at_block: log.delay + *header.number(),
+					next_authority_list: log.next_authorities,
+				})
+			}
+		}
+	}
+
+	fn verify_grandpa_proof<Block: ParentchainBlockTrait>(
+		encoded_justification: EncodedJustification,
+		hash: Block::Hash,
+		number: NumberFor<Block>,
+		set_id: u64,
+		voters: &VoterSet<AuthorityId>,
+	) -> Result<()>
+	where
+		NumberFor<Block>: finality_grandpa::BlockNumberOps,
+	{
+		// We don't really care about the justification, as long as it's valid
+		let _ = GrandpaJustification::<Block>::decode_and_verify_finalizes(
+			&encoded_justification,
+			(hash, number),
+			set_id,
+			voters,
+		)?;
+
+		Ok(())
+	}
+
+	fn pending_change<Block: ParentchainBlockTrait>(
+		digest: &Digest,
+	) -> Option<ScheduledChange<NumberFor<Block>>> {
+		grandpa_log::<Block>(digest).and_then(|log| log.try_into_change())
+	}
+
+	fn validate_grandpa_finality<Block: ParentchainBlockTrait>(
 		&self,
 		header: Block::Header,
 		validator_set: &AuthorityList,
@@ -130,61 +163,24 @@ where
 	}
 }
 
-impl GrandpaFinality {
-	fn apply_validator_set_change<Block: ParentchainBlockTrait>(
+impl<Block: ParentchainBlockTrait> Finality<Block> for FinalityVariants {
+	fn validate(
+		&self,
+		header: <Block as ParentchainBlockTrait>::Header,
+		validator_set: &AuthorityList,
+		validator_set_id: SetId,
+		justifications: Option<Justifications>,
 		relay: &mut RelayState<Block>,
-		header: &Block::Header,
-	) {
-		if let Some(change) = relay.scheduled_change.take() {
-			if &change.at_block == header.number() {
-				relay.current_validator_set = change.next_authority_list;
-				relay.current_validator_set_id += 1;
-			}
+	) -> Result<()> {
+		match self {
+			FinalityVariants::GrandpaFinality => self.validate_grandpa_finality(
+				header,
+				validator_set,
+				validator_set_id,
+				justifications,
+				relay,
+			),
+			FinalityVariants::ParachainFinality => Ok(()),
 		}
 	}
-
-	fn schedule_validator_set_change<Block: ParentchainBlockTrait>(
-		relay: &mut RelayState<Block>,
-		header: &Block::Header,
-	) {
-		if let Some(log) = pending_change::<Block>(header.digest()) {
-			if relay.scheduled_change.is_some() {
-				error!(
-					"Tried to scheduled authorities change even though one is already scheduled!!"
-				); // should not happen if blockchain is configured properly
-			} else {
-				relay.scheduled_change = Some(ScheduledChangeAtBlock {
-					at_block: log.delay + *header.number(),
-					next_authority_list: log.next_authorities,
-				})
-			}
-		}
-	}
-
-	fn verify_grandpa_proof<Block: ParentchainBlockTrait>(
-		encoded_justification: EncodedJustification,
-		hash: Block::Hash,
-		number: NumberFor<Block>,
-		set_id: u64,
-		voters: &VoterSet<AuthorityId>,
-	) -> Result<()>
-	where
-		NumberFor<Block>: finality_grandpa::BlockNumberOps,
-	{
-		// We don't really care about the justification, as long as it's valid
-		let _ = GrandpaJustification::<Block>::decode_and_verify_finalizes(
-			&encoded_justification,
-			(hash, number),
-			set_id,
-			voters,
-		)?;
-
-		Ok(())
-	}
-}
-
-fn pending_change<Block: ParentchainBlockTrait>(
-	digest: &Digest,
-) -> Option<ScheduledChange<NumberFor<Block>>> {
-	grandpa_log::<Block>(digest).and_then(|log| log.try_into_change())
 }
