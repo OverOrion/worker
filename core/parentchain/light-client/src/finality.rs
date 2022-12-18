@@ -107,7 +107,9 @@ impl FinalityVariants {
 	) -> Option<ScheduledChange<NumberFor<Block>>> {
 		grandpa_log::<Block>(digest).and_then(|log| log.try_into_change())
 	}
+}
 
+impl<Block> Finality<Block> for FinalityVariants {
 	fn validate_grandpa_finality<Block: ParentchainBlockTrait>(
 		&self,
 		header: Block::Header,
@@ -115,7 +117,11 @@ impl FinalityVariants {
 		validator_set_id: SetId,
 		justifications: Option<Justifications>,
 		relay: &mut RelayState<Block>,
-	) -> Result<()> {
+	) -> Result<()>
+	where
+		Block: ParentchainBlockTrait,
+		NumberFor<Block>: finality_grandpa::BlockNumberOps,
+	{
 		Self::apply_validator_set_change(relay, &header);
 
 		// Check that the header has been finalized
