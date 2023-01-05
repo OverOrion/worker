@@ -123,7 +123,9 @@ WORKDIR /usr/local/bin
 
 COPY --from=builder /opt/sgxsdk/lib64 /opt/sgxsdk/lib64
 COPY --from=builder /root/work/worker/bin/* ./
+RUN ls -1 -R /lib/x86_64-linux-gnu/ | cat > /original_lib_files
 COPY --from=builder /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
+RUN ls -1 -R /lib/x86_64-linux-gnu/ | cat > /modified_lib_files
 
 RUN touch spid.txt key.txt
 RUN chmod +x /usr/local/bin/integritee-service
@@ -133,4 +135,5 @@ RUN ls -al /usr/local/bin
 RUN ldd /usr/local/bin/integritee-service && \
 	/usr/local/bin/integritee-service --version
 
-ENTRYPOINT ["/usr/local/bin/integritee-service"]
+# ENTRYPOINT ["/usr/local/bin/integritee-service"]
+ENTRYPOINT ["/bin/bash"]
