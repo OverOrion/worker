@@ -124,12 +124,15 @@ impl Enclave {
 
 		let mut collateral_ptr: *mut sgx_ql_qve_collateral_t = std::mem::zeroed();
 		let collateral_ptr_ptr: *mut *mut sgx_ql_qve_collateral_t = &mut collateral_ptr;
+		info!("before calling sgx_ql_get_quote_verification_collateral");
+		info!("current values: self={:#?}, fmspc={:#?}", &self, &fmspc);
 		let sgx_status = sgx_ql_get_quote_verification_collateral(
 			fmspc.as_ptr(),
 			fmspc.len() as uint16_t, //fmspc len is fixed in the function signature
 			pck_ra.as_ptr() as _,
 			collateral_ptr_ptr,
 		);
+		info!("after calling sgx_ql_get_quote_verification_collateral");
 		ensure!(sgx_status == sgx_quote3_error_t::SGX_QL_SUCCESS, Error::SgxQuote(sgx_status));
 		Ok(collateral_ptr)
 	}
@@ -197,7 +200,9 @@ impl RemoteAttestation for Enclave {
 		let mut retval = sgx_status_t::SGX_SUCCESS;
 		let mut unchecked_extrinsic: Vec<u8> = vec![0u8; EXTRINSIC_MAX_SIZE];
 
+		info!("fetching collateral");
 		let collateral_ptr = unsafe { self.get_collateral(fmspc)? };
+		info!("got collateral: {:#?}", collateral_ptr);
 
 		let result = unsafe {
 			ffi::generate_register_quoting_enclave_extrinsic(
