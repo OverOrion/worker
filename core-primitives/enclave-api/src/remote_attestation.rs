@@ -587,7 +587,27 @@ impl TlsRemoteAttestation for Enclave {
 }
 
 fn create_system_path(file_name: &str) -> String {
-	format!("{}{}{}", OS_SYSTEM_PATH, file_name, C_STRING_ENDING)
+	info!("create_system_path:: file_name={}", &file_name);
+
+	let full_path =
+		find_library_by_name(file_name).or_else(format!("{}{}", OS_SYSTEM_PATH, file_name));
+
+	let c_terminated_path = format!("{}{}", full_path, C_STRING_ENDING);
+	info!("create_system_path:: created path={}", &c_terminated_path);
+	c_terminated_path
+}
+fn find_library_by_name(lib_name: &str) -> Result<String> {
+	use std::process::Command;
+	// ldconfig -p | grep libsgx_pce_logic.so.1
+
+	let ldconfig_output = Command::new("ldconfig").args(["-p"]).output()?;
+	let possible_path = String::from_utf8(ldconfig_output.stdout)?
+		.lines()
+		.filter(|line| line.contains(lib_name))
+		.map(|lib_name_and_path| lib_name_and_path.rsplit_once("=>")?.1.trim())
+		.nth(0)?;
+
+	possible_path
 }
 
 fn set_ql_path(path_type: sgx_ql_path_type_t, path: &str) -> EnclaveResult<()> {
