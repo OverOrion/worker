@@ -126,16 +126,8 @@ impl SgxQlQveCollateral {
 			return None
 		}
 		let data = &parts[0];
-		let full_signature = &parts[1][0..parts[1].len()];
-		let signature3 = &parts[1][0..parts[1].len() - 3]; // Remove the two last chars that 'close' the json
-		let signature2 = &parts[1][0..parts[1].len() - 2]; // Remove the two last chars that 'close' the json
-		println!("{}", format!(">>>HERE full_signature is={}", &full_signature));
-		println!("{}", format!(">>> signature2 is={}", &signature2));
-		println!("{}", format!(">>> signature3 is={}", &signature3));
-
-		let last_char = &parts[1][parts[1].len() - 2..parts[1].len() - 1];
-		println!("{}", format!(">>> last char is={}", &last_char));
-		Some((data.to_string(), signature3.to_string()))
+		let signature = &parts[1][0..parts[1].len() - 3]; // Remove the two last chars that 'close' the json
+		Some((data.to_string(), signature.to_string()))
 	}
 
 	fn write_data_to_disk(filename: &str, contents: &[u8]) {
