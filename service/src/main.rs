@@ -692,12 +692,6 @@ fn print_events(events: Events, _sender: Sender<String>) {
 		}
 	}
 }
-#[cfg(feature = "dcap")]
-fn fetch_fmspcs_from_prometheus() -> Vec<[u8;6]> {
-	let mut fmspcs = Vec::new();
-
-	fmspcs
-}
 
 #[cfg(feature = "dcap")]
 fn register_collateral(

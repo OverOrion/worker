@@ -170,3 +170,12 @@ impl ReceiveEnclaveMetrics for EnclaveMetricsReceiver {
 		Ok(())
 	}
 }
+
+#[cfg(feature = "dcap")]
+pub(crate) fn fetch_fmspcs_from_prometheus() -> Vec<[u8;6]> {
+	let mut fmspcs = Vec::new();
+
+
+
+	fmspcs
+}
