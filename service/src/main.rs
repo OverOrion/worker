@@ -225,8 +225,9 @@ fn main() {
 		#[cfg(feature = "dcap")]
 		{
 			//let fmspc = [00u8, 0x90, 0x6E, 0xA1, 00, 00];
-			let fmspc_citadel = [00u8, 0xA0, 0x65, 0x51, 00, 00];
-			enclave.dump_dcap_collateral_to_disk(fmspc_citadel).unwrap();
+			// let fmspc_citadel = [00u8, 0xA0, 0x65, 0x51, 00, 00];
+			let fmspc_builder = [00u8, 0xA0, 0x67, 0x11, 00, 00];
+			enclave.dump_dcap_collateral_to_disk(fmspc_builder).unwrap();
 			enclave.dump_dcap_ra_cert_to_disk().unwrap();
 		}
 	} else if matches.is_present("mrenclave") {
@@ -691,6 +692,12 @@ fn print_events(events: Events, _sender: Sender<String>) {
 		}
 	}
 }
+#[cfg(feature = "dcap")]
+fn fetch_fmspcs_from_prometheus() -> Vec<[u8;6]> {
+	let mut fmspcs = Vec::new();
+
+	fmspcs
+}
 
 #[cfg(feature = "dcap")]
 fn register_collateral(
@@ -700,11 +707,12 @@ fn register_collateral(
 	is_development_mode: bool,
 ) {
 	//let fmspc = [00u8, 0x90, 0x6E, 0xA1, 00, 00];
-	let fmspc_citadel = [00u8, 0xA0, 0x65, 0x51, 00, 00];
-	let uxt = enclave.generate_register_quoting_enclave_extrinsic(fmspc_citadel).unwrap();
+	// let fmspc_citadel = [00u8, 0xA0, 0x65, 0x51, 00, 00];
+	let fmspc_builder = [00u8, 0xA0, 0x67, 0x11, 00, 00];
+	let uxt = enclave.generate_register_quoting_enclave_extrinsic(fmspc_builder).unwrap();
 	send_extrinsic(&uxt, api, accountid, is_development_mode);
 
-	let uxt = enclave.generate_register_tcb_info_extrinsic(fmspc_citadel).unwrap();
+	let uxt = enclave.generate_register_tcb_info_extrinsic(fmspc_builder).unwrap();
 	send_extrinsic(&uxt, api, accountid, is_development_mode);
 }
 
