@@ -612,8 +612,7 @@ fn find_library_by_name(lib_name: &str) -> Option<String> {
 		.filter(|line| line.contains(lib_name))
 		.map(|lib_name_and_path| {
 			lib_name_and_path
-				.rsplit_once("=>")
-				.and_then(|(_, lib_path)| Some(lib_path.trim().to_owned()))
+			.rsplit_once("=>").map(|(_, lib_path)| lib_path.trim().to_owned())
 		}).next()?;
 
 	possible_path
