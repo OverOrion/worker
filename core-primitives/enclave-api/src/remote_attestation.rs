@@ -619,18 +619,18 @@ fn find_library_by_name(lib_name: &str) -> Option<String> {
 }
 
 fn set_ql_path(path_type: sgx_ql_path_type_t, path: &str) -> EnclaveResult<()> {
-	let ret_val = unsafe { sgx_ql_set_path(path_type, create_system_path(path).as_ptr() as _) };
+	let ret_val = unsafe { sgx_ql_set_path(path_type, create_system_path(&path).as_ptr() as _) };
 	if ret_val != sgx_quote3_error_t::SGX_QL_SUCCESS {
-		error!("Could not set {:?}", path_type);
+		error!("Could not set {:?}, path:{:?}", path_type, path);
 		return Err(Error::SgxQuote(ret_val))
 	}
 	Ok(())
 }
 
 fn set_qv_path(path_type: sgx_qv_path_type_t, path: &str) -> EnclaveResult<()> {
-	let ret_val = unsafe { sgx_qv_set_path(path_type, create_system_path(path).as_ptr() as _) };
+	let ret_val = unsafe { sgx_qv_set_path(path_type, create_system_path(&path).as_ptr() as _) };
 	if ret_val != sgx_quote3_error_t::SGX_QL_SUCCESS {
-		error!("Could not set {:?}", path_type);
+		error!("Could not set {:?}, path:{:?}", path_type, path);
 		return Err(Error::SgxQuote(ret_val))
 	}
 	Ok(())
