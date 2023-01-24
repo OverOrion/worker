@@ -14,6 +14,8 @@
 	limitations under the License.
 
 */
+use crate::sgx_reexport_prelude::serde_json;
+use core::ffi::CStr;
 use sgx_types::sgx_ql_qve_collateral_t;
 use std::{io::Write, string::String, vec::Vec};
 
@@ -111,7 +113,10 @@ impl SgxQlQveCollateral {
 	/// Separates the actual data part from the signature for an Intel collateral in JSON format
 	/// Returns the data part and signature as a pair
 	fn separate_json_data_and_signature(data_name: &str, data: &[u8]) -> Option<(String, String)> {
-		let json = String::from_utf8_lossy(data);
+		let json = CStr::from_bytes_with_nul(data)
+			.expect("CStr::from_bytes_with_nul failed")
+			.to_str()
+			.ok()?;
 		let value: serde_json::Value = serde_json::from_str(&json).ok()?;
 		if value[data_name].is_null() || value["signature"].is_null() {
 			return None

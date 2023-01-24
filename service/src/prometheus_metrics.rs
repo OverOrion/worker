@@ -23,8 +23,10 @@ use crate::teeracle::teeracle_metrics::update_teeracle_metrics;
 use crate::{
 	account_funding::EnclaveAccountInfo,
 	error::{Error, ServiceResult},
+	worker::Url,
 };
 use async_trait::async_trait;
+use core::time::Duration;
 use itp_enclave_metrics::EnclaveMetric;
 use lazy_static::lazy_static;
 use log::*;
@@ -169,4 +171,62 @@ impl ReceiveEnclaveMetrics for EnclaveMetricsReceiver {
 		}
 		Ok(())
 	}
+}
+
+// Data structure that matches with REST API JSON
+use http_req::{
+	request::{Method, Request},
+	response::{Headers, Response},
+	uri::Uri,
+};
+use itc_rest_client::{
+	http_client::{DefaultSend, HttpClient, SendHttpRequest, SendWithCertificateVerification},
+	rest_client::RestClient,
+	RestGet, RestPath,
+};
+use serde::{Deserialize, Serialize};
+use url::Url as URL;
+
+#[derive(Serialize, Deserialize, Debug)]
+struct HttpBinAnything {
+	pub method: String,
+	pub url: String,
+}
+
+impl RestPath<()> for HttpBinAnything {
+	fn get_path(_: ()) -> Result<String, itc_rest_client::error::Error> {
+		Ok(format!("anything"))
+	}
+}
+
+pub fn fetch_stuff() -> () {
+	let http_client =
+		HttpClient::new(DefaultSend {}, true, Some(Duration::from_secs(3u64)), None, None);
+	let base_url = URL::parse("https://localhost:9944/events").unwrap();
+
+	let (response, encoded_body) = http_client
+		.send_request::<(), HttpBinAnything>(base_url, Method::GET, (), None, None)
+		.unwrap();
+
+	let response_body: HttpBinAnything =
+		deserialize_response_body(encoded_body.as_slice()).unwrap();
+
+	print!("resp body is: {:#?}", &response_body);
+
+	assert!(response.status_code().is_success());
+	assert!(!response_body.url.is_empty());
+	assert_eq!(response_body.method.as_str(), "GET");
+}
+fn deserialize_response_body<'a, T>(
+	encoded_body: &'a [u8],
+) -> Result<T, itc_rest_client::error::Error>
+where
+	T: Deserialize<'a>,
+{
+	serde_json::from_slice::<'a, T>(encoded_body).map_err(|err| {
+		itc_rest_client::error::Error::DeserializeParseError(
+			err,
+			String::from_utf8_lossy(encoded_body).to_string(),
+		)
+	})
 }

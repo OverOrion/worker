@@ -2603,10 +2603,13 @@ dependencies = [
  "frame-system",
  "futures 0.3.25",
  "hex",
+ "http 0.2.8",
+ "http_req 0.8.1 (git+https://github.com/integritee-network/http_req?branch=master)",
  "integritee-node-runtime",
  "ipfs-api",
  "itc-parentchain",
  "itc-parentchain-test",
+ "itc-rest-client",
  "itc-rpc-client",
  "itc-rpc-server",
  "itp-enclave-api",
@@ -2646,6 +2649,7 @@ dependencies = [
  "teerex-primitives",
  "thiserror 1.0.38",
  "tokio",
+ "url 2.3.1",
  "warp",
 ]
 
