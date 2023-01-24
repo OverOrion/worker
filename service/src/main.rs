@@ -703,8 +703,16 @@ fn register_collateral(
 	is_development_mode: bool,
 ) {
 	//let fmspc = [00u8, 0x90, 0x6E, 0xA1, 00, 00];
+
+	use prometheus_metrics::PrometheusMarblerunEvent;
 	let fmspc_citadel = [00u8, 0xA0, 0x65, 0x51, 00, 00];
-	prometheus_metrics::fetch_stuff();
+	let events = prometheus_metrics::fetch_stuff().unwrap();
+	let events: Vec<PrometheusMarblerunEvent> = serde_json::from_str(&events).unwrap();
+	println!("events is: {:#?}", events);
+	let quotes: Vec<String> = events.into_iter().map(|event| event.activation.quote).collect();
+
+	verify_dcap_quote();
+
 	let uxt = enclave.generate_register_quoting_enclave_extrinsic(fmspc_citadel).unwrap();
 	send_extrinsic(&uxt, api, accountid, is_development_mode);
 

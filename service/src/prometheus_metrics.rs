@@ -207,8 +207,9 @@ pub struct PrometheusMarblerunEvent {
 	pub activation: PrometheusMarblerunEventActivation,
 }
 #[derive(Serialize, Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
 pub struct PrometheusMarblerunEventActivation {
-	pub marbleType: String,
+	pub marble_type: String,
 	pub uuid: String,
 	pub quote: String,
 }
