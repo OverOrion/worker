@@ -26,7 +26,7 @@ thiserror = "1.0"
 tokio = { version = "1.6.1", features = ["full"] }
 warp = "0.3"
 #prometheus-http-query = { branch = "master", git = "https://github.com/puetzp/prometheus-http-query.git", default-features = false }
-#reqwest = { default-features = false, version = "0.11.14" }
+reqwest = { version = "0.11.14", features = ["blocking"] }
 http = { version = "0.2" }
 http_req = { features = ["rust-tls"], branch = "master", git = "https://github.com/integritee-network/http_req" }
 url = { version = "2.0.0" }

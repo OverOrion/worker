@@ -187,46 +187,28 @@ use itc_rest_client::{
 use serde::{Deserialize, Serialize};
 use url::Url as URL;
 
+pub fn fetch_stuff() -> std::result::Result<String, reqwest::Error> {
+	use std::io::Read;
+	let mut res = reqwest::blocking::get("http://localhost:9944/events").unwrap();
+
+	let mut body = String::new();
+	res.read_to_string(&mut body).unwrap();
+
+	println!("Status: {}", res.status());
+	println!("Headers:\n{:#?}", res.headers());
+	println!("Body:\n{}", &body);
+
+	Ok(body)
+}
+
 #[derive(Serialize, Deserialize, Debug)]
-struct HttpBinAnything {
-	pub method: String,
-	pub url: String,
+pub struct PrometheusMarblerunEvent {
+	pub time: String,
+	pub activation: PrometheusMarblerunEventActivation,
 }
-
-impl RestPath<()> for HttpBinAnything {
-	fn get_path(_: ()) -> Result<String, itc_rest_client::error::Error> {
-		Ok(format!("anything"))
-	}
-}
-
-pub fn fetch_stuff() -> () {
-	let http_client =
-		HttpClient::new(DefaultSend {}, true, Some(Duration::from_secs(3u64)), None, None);
-	let base_url = URL::parse("https://localhost:9944/events").unwrap();
-
-	let (response, encoded_body) = http_client
-		.send_request::<(), HttpBinAnything>(base_url, Method::GET, (), None, None)
-		.unwrap();
-
-	let response_body: HttpBinAnything =
-		deserialize_response_body(encoded_body.as_slice()).unwrap();
-
-	print!("resp body is: {:#?}", &response_body);
-
-	assert!(response.status_code().is_success());
-	assert!(!response_body.url.is_empty());
-	assert_eq!(response_body.method.as_str(), "GET");
-}
-fn deserialize_response_body<'a, T>(
-	encoded_body: &'a [u8],
-) -> Result<T, itc_rest_client::error::Error>
-where
-	T: Deserialize<'a>,
-{
-	serde_json::from_slice::<'a, T>(encoded_body).map_err(|err| {
-		itc_rest_client::error::Error::DeserializeParseError(
-			err,
-			String::from_utf8_lossy(encoded_body).to_string(),
-		)
-	})
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PrometheusMarblerunEventActivation {
+	pub marbleType: String,
+	pub uuid: String,
+	pub quote: String,
 }
