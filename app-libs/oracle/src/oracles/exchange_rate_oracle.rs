@@ -59,7 +59,10 @@ where
 		let source_id = self.oracle_source.metrics_id();
 		self.metrics_exporter.increment_number_requests(source_id.clone());
 
+		//POSSIBLE ERROR HERE
+		println!("base_url....?");
 		let base_url = self.oracle_source.base_url()?;
+		println!("base_url..? succeeded");
 		let root_certificate = self.oracle_source.root_certificate_content();
 
 		debug!("Get exchange rate from URI: {}, trading pair: {:?}", base_url, trading_pair);
@@ -75,6 +78,8 @@ where
 
 		let timer_start = Instant::now();
 
+		//POSSIBLE ERROR HERE
+		println!("execute_exchange_rate_request....?");
 		match self
 			.oracle_source
 			.execute_exchange_rate_request(&mut rest_client, trading_pair.clone())
@@ -87,7 +92,10 @@ where
 				debug!("Successfully executed exchange rate request");
 				Ok((exchange_rate, base_url))
 			},
-			Err(e) => Err(e),
+			Err(e) => {
+				println!("execute_exchange_rate_request failed, err is: {:#?}", &e);
+				Err(e)
+			},
 		}
 	}
 }

@@ -103,23 +103,36 @@ impl<OracleSourceInfo: Into<TradingInfo>> OracleSource<OracleSourceInfo> for Coi
 		trading_pair: TradingPair,
 	) -> Result<ExchangeRate, Error> {
 		let fiat_id = trading_pair.fiat_currency.clone();
-		let crypto_id = Self::map_crypto_currency_id(&trading_pair)?;
+		//POSSIBLE ERROR HERE
+		println!("crypto_id?...");
 
+		let crypto_id = Self::map_crypto_currency_id(&trading_pair)?;
+		println!("crypto_id?...succeeded");
+
+		println!("response from rest_client?...");
 		let response = rest_client
 			.get_with::<String, CoinGeckoMarket>(
 				COINGECKO_PATH.to_string(),
 				&[(COINGECKO_PARAM_CURRENCY, &fiat_id), (COINGECKO_PARAM_COIN, &crypto_id)],
 			)
 			.map_err(Error::RestClient)?;
+		println!("response from rest_client?...succeeded");
+		//POSSIBLE ERROR HERE
 
 		let list = response.0;
 		if list.is_empty() {
+			println!("list is empty");
+			//POSSIBLE ERROR HERE
 			return Err(Error::NoValidData(COINGECKO_URL.to_string(), trading_pair.key()))
 		}
 
 		match list[0].current_price {
 			Some(r) => Ok(ExchangeRate::from_num(r)),
-			None => Err(Error::EmptyExchangeRate(trading_pair)),
+			//POSSIBLE ERROR HERE
+			None => {
+				println!("list[0].current_price is None");
+				Err(Error::EmptyExchangeRate(trading_pair))
+			},
 		}
 	}
 }
