@@ -32,6 +32,7 @@ pub(super) fn test_verify_get_exchange_rate_from_coin_gecko_works() {
 	let coin_gecko_oracle = create_coin_gecko_oracle(Arc::new(MetricsOCallMock::default()));
 
 	let result = coin_gecko_oracle.get_exchange_rate(trading_pair.clone());
+	println("coin_gecko_oracle result is: {:#?}", &result);
 	assert!(result.is_ok());
 }
 
