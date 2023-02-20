@@ -110,6 +110,7 @@ impl Send for SendWithCertificateVerification {
 		request: &mut Request,
 		writer: &mut Vec<u8>,
 	) -> Result<Response, Error> {
+		info!("root_cert is: {}", &self.root_certificate);
 		request
 			.send_with_pem_certificate(writer, Some(self.root_certificate.to_string()))
 			.map_err(Error::HttpReqError)
