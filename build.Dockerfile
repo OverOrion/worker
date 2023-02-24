@@ -38,6 +38,7 @@ ENV ADDITIONAL_FEATURES=$ADDITIONAL_FEATURES_ARG
 
 WORKDIR $HOME/worker
 COPY . .
+RUN source $SGX_SDK/environment
 
 RUN make
 
@@ -111,13 +112,17 @@ ENTRYPOINT ["/usr/local/bin/integritee-cli"]
 
 ### Deployed worker service
 ##################################################
-FROM builder AS deployed-worker
+FROM runner AS deployed-worker
 LABEL maintainer="zoltan@integritee.network"
 
 ENV SGX_SDK /opt/sgxsdk
 ENV LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:${SGX_SDK}/lib64"
 
 WORKDIR /usr/local/bin
+
+COPY --from=builder /opt/sgxsdk/lib64 /opt/sgxsdk/lib64
+COPY --from=builder /root/work/worker/bin/* ./
+COPY --from=builder /lib/x86_64-linux-gnu /lib/x86_64-linux-gnu
 
 RUN touch spid.txt key.txt
 RUN chmod +x /usr/local/bin/integritee-service
