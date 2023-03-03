@@ -1,4 +1,4 @@
-FROM integritee/integritee-dev:0.1.12
+FROM overorion/rust-sgx:jammy
 LABEL maintainer="zoltan@integritee.network"
 
 # By default we warp the service
